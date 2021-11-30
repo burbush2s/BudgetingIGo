@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">BudgetingIGo</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Login</string>
+    <string name="second_fragment_label">Budgeting I Go</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="email_password_title_text">Email and Password</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify</string>
+    <string name="reload">Reload</string>
+    <string name="auth_failed">Authentication failed</string>
+</resources>

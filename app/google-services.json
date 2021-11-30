@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "968300449353",
+    "firebase_url": "https://budgetingigo-default-rtdb.firebaseio.com",
+    "project_id": "budgetingigo",
+    "storage_bucket": "budgetingigo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968300449353:android:bb0d9b72cf9fc207753998",
+        "android_client_info": {
+          "package_name": "com.example.budgetingigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968300449353-es13sg5im5rruue8b87r307snkuae7va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxC63mE_JrbMUAKULu3Rvx3WdxJZso-HQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968300449353-es13sg5im5rruue8b87r307snkuae7va.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
