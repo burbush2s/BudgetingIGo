@@ -45,6 +45,10 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        // ...
+        functions = Firebase.functions
 
         // Buttons
         with (binding) {
@@ -61,10 +65,7 @@ class FirstFragment : Fragment() {
 
         }
 
-        // Initialize Firebase Auth
-        auth = Firebase.auth
-        // ...
-        functions = Firebase.functions
+
 
     }
 
@@ -81,7 +82,7 @@ class FirstFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-
+                    findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -111,16 +112,20 @@ class FirstFragment : Fragment() {
                             if (e is FirebaseFunctionsException) {
                                 val code = e.code
                                 val details = e.details
+                                print("code: "+code)
+                                print("detail: "+details)
                             }
-
+                            print(e?.stackTrace)
+                            //binding.status.setText(task.result)
                             // ...
+                        } else {
+                            Log.d(TAG, "getBudgetings:success")
                         }
-                            binding.status.setText(task.result)
 
                         // ...
                     })
 
-                    findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)

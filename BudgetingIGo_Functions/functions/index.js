@@ -28,7 +28,7 @@ const db = admin.firestore();
 
 // [START addMessage]
 // Get the Budget Models already defined
-exports.getBugetingModels = functions.https.onRequest(async (req, res) => {
+/*exports.getBugetingModels = functions.https.onRequest(async (req, res) => {
   console.log('Starting query BugetingModels');
   const modelsRef = db.collection('BudgetingModels');
   const snapshot = await modelsRef.where('enabled', '==', true).get();
@@ -52,10 +52,10 @@ exports.getBugetingModels = functions.https.onRequest(async (req, res) => {
   });
   res.json(budgetingModels);
   // [END adminSdkAdd]
-});
+});*/
 // [END addMessage]
 
-/*exports.getBugetingModelsAndroid = functions.https.onCall((data, context) => {
+exports.getBugetingModelsAndroid = functions.https.onCall((data, context) => {
   console.log('Starting query BugetingModels');
   const modelsRef = db.collection('BudgetingModels');
   const snapshot =  modelsRef.where('enabled', '==', true).get();
@@ -82,7 +82,7 @@ exports.getBugetingModels = functions.https.onRequest(async (req, res) => {
   // [END adminSdkAdd]
 });
 
-exports.saveSelectedModel = functions.https.onCall((data, context) => {
+/*exports.saveSelectedModel = functions.https.onCall((data, context) => {
   console.log('Starting query saveSelectedModel');
   //Get selected model and initial quantity
   const selectedModel = JSON.parse(data.query.model);
