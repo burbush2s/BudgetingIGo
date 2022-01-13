@@ -19,7 +19,6 @@
 // [START import]
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
-
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -55,30 +54,49 @@ const db = admin.firestore();
 });*/
 // [END addMessage]
 
-exports.getBugetingModelsAndroid = functions.https.onCall((data, context) => {
+exports.getBudgetingModelsAndroid = functions.https.onCall((data, context) => {
   console.log('Starting query BugetingModels');
-  const modelsRef = db.collection('BudgetingModels');
-  const snapshot =  modelsRef.where('enabled', '==', true).get();
-  if (snapshot.empty) {
-    console.log('No matching documents.');
-    return;
-  }  
   let budgetingModels=[];
-  snapshot.forEach(doc => {
-    console.log("snapshot data: "+JSON.stringify(doc.data()));
-    let concepts = doc.data().concepts;
-    const conceptsMap = Object.entries(concepts);
+  const modelsRef = db.collection('BudgetingModels');
+  const snapshot =  modelsRef.where('enabled', '==', true).get().then(querySnapshot => {
+    querySnapshot.forEach(documentSnapshot => {
+      console.log("document: ", documentSnapshot);
+      console.log("snapshot data: "+JSON.stringify(documentSnapshot.data()));
+      let concepts = documentSnapshot.data().concepts;
+      const conceptsMap = Object.entries(concepts);
 
-    console.log("map:" + conceptsMap.size);  
-    let jsonObject = {
-      "name":doc.data().name,
-      "enabled":doc.data().enabled,
-      "concepts":conceptsMap
-    };  
-    budgetingModels.push(jsonObject);
+      console.log("map:" + conceptsMap.size);  
+      let jsonObject = {
+        "name":documentSnapshot.data().name,
+        "enabled":documentSnapshot.data().enabled,
+        "concepts":conceptsMap
+      };  
+      budgetingModels.push(jsonObject);
+    });
+    console.log("budgetingModels ",budgetingModels);
+    return budgetingModels;
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+      throw new functions.https.HttpsError('unknown', error.message, error);
   });
+
   
-  return budgetingModels;
+  // snapshot.forEach(doc => {
+    // console.log("snapshot data: "+JSON.stringify(doc.data()));
+    // let concepts = doc.data().concepts;
+    // const conceptsMap = Object.entries(concepts);
+
+    // console.log("map:" + conceptsMap.size);  
+    // let jsonObject = {
+    //   "name":doc.data().name,
+    //   "enabled":doc.data().enabled,
+    //   "concepts":conceptsMap
+    // };  
+    // budgetingModels.push(jsonObject);
+    // console.log(doc.id, '=>', doc.data());
+  // });
+  
+  
   // [END adminSdkAdd]
 });
 
@@ -115,3 +133,51 @@ exports.getBugetingModelsAndroid = functions.https.onCall((data, context) => {
   return res1;
   // [END adminSdkAdd]
 });*/
+
+exports.addMessage = functions.https.onCall((data, context) => {
+  // [START_EXCLUDE]
+  // [START readMessageData]
+  // Message text passed from the client.
+  const text = data.text;
+  // [END readMessageData]
+  // [START messageHttpsErrors]
+  // Checking attribute.
+  if (!(typeof text === 'string') || text.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+        'one arguments "text" containing the message text to add.');
+  }
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+        'while authenticated.');
+  }
+  // [END messageHttpsErrors]
+
+  // [START authIntegration]
+  // Authentication / user information is automatically added to the request.
+  const uid = context.auth.uid;
+  const name = context.auth.token.name || null;
+  const picture = context.auth.token.picture || null;
+  const email = context.auth.token.email || null;
+  // [END authIntegration]
+
+  // [START returnMessageAsync]
+  // Saving the new message to the Realtime Database.
+  const sanitizedMessage = text; // Sanitize the message.
+  return admin.database().ref('/messages').push({
+    text: sanitizedMessage,
+    author: { uid, name, picture, email },
+  }).then(() => {
+    console.log('New Message written');
+    // Returning the sanitized message to the client.
+    return { text: sanitizedMessage };
+  })
+  // [END returnMessageAsync]
+    .catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+      throw new functions.https.HttpsError('unknown', error.message, error);
+    });
+  // [END_EXCLUDE]
+});
