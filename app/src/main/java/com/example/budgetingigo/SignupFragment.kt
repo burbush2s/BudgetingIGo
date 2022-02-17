@@ -1,32 +1,28 @@
 package com.example.budgetingigo
 
-import android.content.ContentValues.TAG
+import android.content.ContentValues
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.budgetingigo.data.Balances
 import com.example.budgetingigo.data.BudgetingModelRepository
-import com.example.budgetingigo.databinding.ActivityMainBinding
 import com.example.budgetingigo.databinding.FragmentFirstBinding
+import com.example.budgetingigo.databinding.FragmentSignupBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 private const val LOG_TAG = "FirstFragment"
 
-class FirstFragment : Fragment() {
+class SignupFragment : Fragment() {
     var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
     private var viewModel: SharedViewModel? = null
     var hasPreviousData = false
@@ -41,7 +37,7 @@ class FirstFragment : Fragment() {
         this.listener = listener
     }
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentSignupBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -52,7 +48,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -70,58 +66,44 @@ class FirstFragment : Fragment() {
 
         // Buttons
         with (binding) {
-            emailSignInButton.setOnClickListener {
+            emailCreateAccountButton.setOnClickListener {
                 val email = binding.fieldEmail.text.toString()
                 val password = binding.fieldPassword.text.toString()
-                signIn(email, password)
+                createAccount(email, password)
             }
 
-            sigupButton.setOnClickListener{
-                findNavController().navigate(R.id.action_FirstFragment_to_signupFragment)
-            }
         }
 
 
 
     }
 
-
-    private fun signIn(email: String, password: String) {
-        Log.d(TAG, "signIn:$email")
+    private fun createAccount(email: String, password: String) {
+        Log.d(ContentValues.TAG, "createAccount:$email")
         if (!validateForm()) {
             return
         }
 
-        auth.signInWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
+                    Log.d(ContentValues.TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    budgetingModelRepository.getBalances()
-                        .addOnSuccessListener { document ->
-                            if (document.data != null) {
-                                Log.d(LOG_TAG, "getBalances - FirstFragment - DocumentSnapshot data: ${document.data}")
-                                var prevData = document.toObject(Balances::class.java)!!
-                                viewModel?.setBalances(prevData)
-                                findNavController().navigate(R.id.action_FirstFragment_to_listMovementsFragment)
-                            }else
-                                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-                            (requireActivity() as MainActivity).showHideToolbar(true)
-                        }
-                        .addOnFailureListener {e ->
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(context, "Failed to get previous data.",
-                                Toast.LENGTH_SHORT).show()
-                        }
+                    Toast.makeText(context, "User successfully registered.",
+                        Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_signupFragment_to_FirstFragment)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(context, "Authentication failed.",
+                    Log.w(ContentValues.TAG, "createUserWithEmail:failure", task.exception)
+                    if(task.exception?.javaClass == FirebaseAuthUserCollisionException::class.java){
+                        Toast.makeText(context, "The email address is already in use.",
+                            Toast.LENGTH_SHORT).show()
+                    }else
+                        Toast.makeText(context, "Sign up failed.",
                         Toast.LENGTH_SHORT).show()
 
                 }
-
             }
     }
 

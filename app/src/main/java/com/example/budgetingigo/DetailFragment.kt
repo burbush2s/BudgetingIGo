@@ -1,6 +1,5 @@
 package com.example.budgetingigo
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.budgetingigo.databinding.FragmentDetailBinding
-import java.text.NumberFormat
 
 private const val LOG_TAG = "DetailFragment"
 
@@ -48,9 +46,9 @@ class DetailFragment : Fragment() {
             }
         })
 
-        binding.SelectModelButton.setOnClickListener {
-            Log.i(LOG_TAG, "addMoneyIncomeButton clicked")
-
+        binding.selectModelButton.setOnClickListener {
+            Log.i(LOG_TAG, "selectModelButton clicked")
+            findNavController().navigate(R.id.action_detailFragment_to_incomeFragment)
         }
 
     }
