@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.budgetingigo.data.BudgetingModel
 import com.example.budgetingigo.databinding.ConceptsItemBinding
 
 class ConceptsAdapter( private val items: List<Pair<String,Float?>>,
@@ -29,7 +28,7 @@ class ConceptsAdapter( private val items: List<Pair<String,Float?>>,
         val conceptPercentage =items[position]
 
         with(holder.binding) {
-            var hasNegativeValue = false
+            val hasNegativeValue: Boolean
             if(conceptPercentage.second != null){
                 descriptionText.text = conceptPercentage.first + conceptPercentage.second
                 hasNegativeValue = if(conceptPercentage.second!! <0) {

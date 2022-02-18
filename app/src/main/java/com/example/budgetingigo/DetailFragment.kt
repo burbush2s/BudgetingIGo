@@ -15,7 +15,7 @@ private const val LOG_TAG = "DetailFragment"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
+ * Use the DetailFragment.newInstance factory method to
  * create an instance of this fragment.
  */
 class DetailFragment : Fragment() {

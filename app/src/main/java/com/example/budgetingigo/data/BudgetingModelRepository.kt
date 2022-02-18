@@ -12,7 +12,7 @@ import java.util.*
 
 private const val LOG_TAG = "BudgetingModelRepo"
 
-class BudgetingModelRepository() {
+class BudgetingModelRepository{
 
     private val db = FirebaseFirestore.getInstance()
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -25,7 +25,7 @@ class BudgetingModelRepository() {
     fun saveMovement(model:BudgetingModel, movement : Movements, balances: Balances, hasPreviusData: Boolean): Task<Void>{
         val user = auth.currentUser!!.uid
         Log.d(LOG_TAG, "auth: " + auth + " user : " + user)
-        val movement = hashMapOf(
+        val movementToSave = hashMapOf(
             "user" to user,
             "concept" to movement.concept,
             "description" to movement.description,
@@ -56,7 +56,7 @@ class BudgetingModelRepository() {
                 batch.update(balanceRef, userObj)
             else
                 batch.set(balanceRef, userObj)
-            batch.set(movesRef, movement)
+            batch.set(movesRef, movementToSave)
         }
     }
 

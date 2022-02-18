@@ -87,23 +87,23 @@ class IncomeFragment : Fragment() {
                 newBalances.previousBalance = previousBal.generalBalance
                 newBalances.expenseBalance  = previousBal.expenseBalance
                 //values with changes
-                newBalances.incomeBalance = previousBal!!.incomeBalance + income
-                newBalances.generalBalance = previousBal!!.generalBalance + income
+                newBalances.incomeBalance = previousBal.incomeBalance + income
+                newBalances.generalBalance = previousBal.generalBalance + income
 
-                conceptsListPrev = previousBal!!.itemizedBalance.toList()
+                conceptsListPrev = previousBal.itemizedBalance.toList()
                 for((i, c) in conceptsListPrev.withIndex()){
                     val p= Pair(c.first,c.second+conceptsListNewValues[i].second)
                     conceptsListNew.add(p)
                 }
                 hasPreviusData = true
             }else{
-                newBalances?.incomeBalance = income
-                newBalances?.generalBalance = income
+                newBalances.incomeBalance = income
+                newBalances.generalBalance = income
                 conceptsListNew = viewModel?.conceptsListMutable?.value?.toList() as MutableList<Pair<String, Float>>
             }
             val movement = Movements(concept = "Income",description = binding.incomeDescription.editableText.toString(),
             amount = income, type = "+")
-            newBalances!!.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
+            newBalances.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
             budgetingModelRepository.saveMovement(
                 modelSelected,
                 movement,

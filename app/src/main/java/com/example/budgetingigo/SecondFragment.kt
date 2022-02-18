@@ -50,9 +50,6 @@ class SecondFragment : Fragment() {
             binding.modelList.adapter = BudgetingModelAdapter(models, onItemClick)
         })
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
     }
 
     override fun onDestroyView() {

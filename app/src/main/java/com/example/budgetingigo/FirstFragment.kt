@@ -9,13 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.budgetingigo.data.Balances
 import com.example.budgetingigo.data.BudgetingModelRepository
-import com.example.budgetingigo.databinding.ActivityMainBinding
 import com.example.budgetingigo.databinding.FragmentFirstBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,16 +26,11 @@ private const val LOG_TAG = "FirstFragment"
 class FirstFragment : Fragment() {
     var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
     private var viewModel: SharedViewModel? = null
-    var hasPreviousData = false
     private lateinit var auth: FirebaseAuth
     private var listener: OnEventListener? = null
 
     interface OnEventListener {
         fun hideToolbar()
-    }
-
-    fun setOnEventListener(listener: OnEventListener?) {
-        this.listener = listener
     }
 
     private var _binding: FragmentFirstBinding? = null
@@ -50,7 +42,7 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,7 +56,7 @@ class FirstFragment : Fragment() {
             ViewModelProvider(this)[SharedViewModel::class.java]
         }
 
-        listener?.hideToolbar();
+        listener?.hideToolbar()
         // Initialize Firebase Auth
         auth = Firebase.auth
 
@@ -97,12 +89,12 @@ class FirstFragment : Fragment() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
+
                     budgetingModelRepository.getBalances()
                         .addOnSuccessListener { document ->
                             if (document.data != null) {
                                 Log.d(LOG_TAG, "getBalances - FirstFragment - DocumentSnapshot data: ${document.data}")
-                                var prevData = document.toObject(Balances::class.java)!!
+                                val prevData = document.toObject(Balances::class.java)!!
                                 viewModel?.setBalances(prevData)
                                 findNavController().navigate(R.id.action_FirstFragment_to_listMovementsFragment)
                             }else
@@ -110,7 +102,7 @@ class FirstFragment : Fragment() {
                             (requireActivity() as MainActivity).showHideToolbar(true)
                         }
                         .addOnFailureListener {e ->
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
+                            Log.w(TAG, "signInWithEmail:failure", e)
                             Toast.makeText(context, "Failed to get previous data.",
                                 Toast.LENGTH_SHORT).show()
                         }

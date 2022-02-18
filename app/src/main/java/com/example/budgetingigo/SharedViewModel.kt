@@ -7,20 +7,19 @@ import com.example.budgetingigo.data.BudgetingModel
 import com.example.budgetingigo.data.BudgetingModelRepository
 import com.example.budgetingigo.data.Movements
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.QuerySnapshot
 
 private const val LOG_TAG = "SharedViewModel"
 
 class SharedViewModel : ViewModel() {
 
-    var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
-    var modelsMutable : MutableLiveData<List<BudgetingModel>> = MutableLiveData()
-    var conceptsMutable : MutableLiveData<List<Pair<String,Float?>>> = MutableLiveData()
+    private var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
+    private var modelsMutable : MutableLiveData<List<BudgetingModel>> = MutableLiveData()
+    private var conceptsMutable : MutableLiveData<List<Pair<String,Float?>>> = MutableLiveData()
     var conceptsListMutable : MutableLiveData<List<Pair<String, Float>>> = MutableLiveData()
     var selectedBudgetingModel: MutableLiveData<BudgetingModel> =MutableLiveData()
-    var movesMutable : MutableLiveData<List<Movements>> = MutableLiveData()
+    private var movesMutable : MutableLiveData<List<Movements>> = MutableLiveData()
     var balancesMutable : MutableLiveData<Balances> = MutableLiveData()
-    var conceptValuesMutable : MutableLiveData<List<Pair<String,Float?>>> = MutableLiveData()
+    private var conceptValuesMutable : MutableLiveData<List<Pair<String,Float?>>> = MutableLiveData()
     var conceptValuesListMutable : MutableLiveData<List<Pair<String, Float>>> = MutableLiveData()
 
     fun getModels(): LiveData<List<BudgetingModel>>{
@@ -62,7 +61,7 @@ class SharedViewModel : ViewModel() {
     fun getMovements() : LiveData<List<Movements>>{
         val movesList : MutableList<Movements> = mutableListOf()
         budgetingModelRepository.getMovements()
-            .addSnapshotListener(EventListener<QuerySnapshot> { documents, e ->
+            .addSnapshotListener(EventListener { documents, e ->
                 if (e != null) {
                     Log.w(LOG_TAG, "Listen failed.", e)
                     modelsMutable.value = null
@@ -107,7 +106,7 @@ class SharedViewModel : ViewModel() {
             Log.i(LOG_TAG, "getConceptsValuesForExpenses()")
             for (prevValue in prevConceptValues) {
                 val result = prevValue.second - expense
-                if (concept.equals(prevValue.first)) {
+                if (concept == prevValue.first) {
                     conceptsPercentages.add(Pair(prevValue.first + " = $" + prevValue.second + " - $" + expense + " = $",result))
                     conceptsListModified.add(Pair(prevValue.first, result))
                 } else {

@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
-        android:text="Don't have an account?"
+        android:text="@string/don_t_have_an_account"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sigupButton"
@@ -104,7 +104,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:linksClickable="true"
-        android:text="Sign up"
+        android:text="@string/sign_up"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -121,6 +121,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fieldEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

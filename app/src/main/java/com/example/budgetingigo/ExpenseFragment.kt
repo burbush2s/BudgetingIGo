@@ -1,6 +1,5 @@
 package com.example.budgetingigo
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.core.view.iterator
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +17,6 @@ import com.example.budgetingigo.data.BudgetingModel
 import com.example.budgetingigo.data.BudgetingModelRepository
 import com.example.budgetingigo.data.Movements
 import com.example.budgetingigo.databinding.FragmentExpenseBinding
-import com.example.budgetingigo.databinding.FragmentIncomeBinding
 
 private const val LOG_TAG = "ExpenseFragment"
 
@@ -29,10 +25,9 @@ class ExpenseFragment : Fragment() {
     private var _binding: FragmentExpenseBinding? = null
     private val binding get() = _binding!!
     private var modelSelected: BudgetingModel = BudgetingModel()
-    var expense = 0F;
+    var expense = 0F
     var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
-    var balances : Balances = Balances()
-    var previousBal : Balances = Balances()
+
     private val onColorChange: (Boolean) -> Unit = {hasNegativeValue ->
         if(hasNegativeValue){
             binding.buttonSave.isEnabled = false
@@ -64,17 +59,17 @@ class ExpenseFragment : Fragment() {
 
         val spinner = binding.spinnerConcepts
 
-        var itemsSpinner: MutableList<String> = mutableListOf()
+        val itemsSpinner: MutableList<String> = mutableListOf()
 
         Log.d(LOG_TAG, "concepts: "+ viewModel?.selectedBudgetingModel?.value )
 
         for(i in viewModel?.selectedBudgetingModel?.value?.concepts?.toList()!!){
-            itemsSpinner.add(i.first.toString())
+            itemsSpinner.add(i.first)
         }
 
 
         val spinnerAdapter = activity?.let{
-            ArrayAdapter<String>(it, android.R.layout.simple_spinner_item,itemsSpinner)
+            ArrayAdapter(it, android.R.layout.simple_spinner_item,itemsSpinner)
         }
 
         spinner.adapter = spinnerAdapter
@@ -87,8 +82,8 @@ class ExpenseFragment : Fragment() {
             }
         })
 
-        if(binding.addedExpense?.text.toString()!="")
-            expense = binding.addedExpense?.text.toString().toFloat()
+        if(binding.addedExpense.text.toString()!="")
+            expense = binding.addedExpense.text.toString().toFloat()
 
         viewModel?.getConceptsValuesForExpenses(expense,spinner.selectedItem.toString())?.observe(viewLifecycleOwner,{ concepts ->
             binding.conceptValuesList.adapter = ConceptsAdapter(concepts, onColorChange)
@@ -111,39 +106,39 @@ class ExpenseFragment : Fragment() {
 
         binding.buttonSave.setOnClickListener {
             binding.buttonSave.isEnabled = false
-            var newBalances : Balances? = Balances()
-            var conceptsListPrev : List<Pair<String, Float>>
+            val newBalances = Balances()
+            val conceptsListPrev : List<Pair<String, Float>>
             var conceptsListNew : MutableList<Pair<String, Float>> = mutableListOf()
-            var conceptsListNewValues = viewModel?.conceptValuesListMutable!!.value!!.toList()
+            val conceptsListNewValues = viewModel?.conceptValuesListMutable!!.value!!.toList()
             var hasPreviusData = false
             val previousBal = viewModel?.balancesMutable?.value
             if(previousBal != null){
                 Log.d(LOG_TAG, "buttonSave - saveIncome - previousBal != null")
                 //values without changes
-                newBalances?.previousBalance = previousBal.generalBalance
-                newBalances?.incomeBalance = previousBal!!.incomeBalance
+                newBalances.previousBalance = previousBal.generalBalance
+                newBalances.incomeBalance = previousBal.incomeBalance
 
                 //values with changes
-                newBalances?.expenseBalance  = previousBal!!.expenseBalance + expense
-                newBalances?.generalBalance = previousBal!!.generalBalance - expense
+                newBalances.expenseBalance = previousBal.expenseBalance + expense
+                newBalances.generalBalance = previousBal.generalBalance - expense
 
-                conceptsListPrev = previousBal!!.itemizedBalance.toList()
+                conceptsListPrev = previousBal.itemizedBalance.toList()
                 for((i, c) in conceptsListPrev.withIndex()){
                     val p= Pair(c.first,c.second+conceptsListNewValues[i].second)
                     conceptsListNew.add(p)
                 }
                 hasPreviusData = true
             }else{
-                newBalances?.expenseBalance = expense
-                newBalances?.generalBalance = - expense
+                newBalances.expenseBalance = expense
+                newBalances.generalBalance = - expense
                 conceptsListNew = viewModel?.conceptsListMutable?.value?.toList() as MutableList<Pair<String, Float>>
             }
 
-            newBalances!!.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
+            newBalances.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
             val movement = Movements(concept = spinner.selectedItem.toString(),
                 description = binding.expenseDescription.editableText.toString(),
                 amount = expense, type = "-")
-            newBalances!!.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
+            newBalances.itemizedBalance = conceptsListNew.associate { Pair(it.first,it.second) }
             budgetingModelRepository.saveMovement(
                 modelSelected,
                 movement,
@@ -167,9 +162,9 @@ class ExpenseFragment : Fragment() {
     }
 
     fun updateView(selectedItem : String){
-        if(binding.addedExpense?.text.toString()!="")
-            expense = binding.addedExpense?.text.toString().toFloat()
-        viewModel?.getConceptsValuesForExpenses(expense,selectedItem);
+        if(binding.addedExpense.text.toString()!="")
+            expense = binding.addedExpense.text.toString().toFloat()
+        viewModel?.getConceptsValuesForExpenses(expense,selectedItem)
         binding.conceptValuesList.adapter?.notifyDataSetChanged()
     }
 

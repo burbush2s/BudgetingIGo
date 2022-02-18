@@ -40,4 +40,25 @@
     <string name="login_failed">"Login failed"</string>
     <string name="add_income">Add income</string>
     <string name="concept_percentage_breakdown">%s / %d : %f</string>
+    <string name="save_expense">Save expense</string>
+    <string name="description">Description</string>
+    <string name="concept">Concept:</string>
+    <string name="expense">Expense</string>
+    <string name="concepts_according_to_percentages">Concepts according to percentages:</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="icon">icon</string>
+    <string name="save_income">Save income</string>
+    <string name="income">Income</string>
+    <string name="_0_0">0.0</string>
+    <string name="monthly_summary_by_concept">Monthly summary by concept</string>
+    <string name="last_ten_movements">Last ten movements</string>
+    <string name="balances_chart">Balances chart</string>
+    <string name="incomes">Incomes:</string>
+    <string name="previous_balance">Previous balance:</string>
+    <string name="expenses">Expenses:</string>
+    <string name="current_balance">Current balance:</string>
+    <string name="current_model">Current model</string>
+    <string name="amount">Amount</string>
+    <string name="plus_sign">+</string>
 </resources>

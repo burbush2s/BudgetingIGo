@@ -11,30 +11,20 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.budgetingigo.data.Balances
-import com.example.budgetingigo.data.BudgetingModelRepository
-import com.example.budgetingigo.databinding.FragmentFirstBinding
 import com.example.budgetingigo.databinding.FragmentSignupBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-private const val LOG_TAG = "FirstFragment"
 
 class SignupFragment : Fragment() {
-    var budgetingModelRepository: BudgetingModelRepository = BudgetingModelRepository()
     private var viewModel: SharedViewModel? = null
-    var hasPreviousData = false
     private lateinit var auth: FirebaseAuth
     private var listener: OnEventListener? = null
 
     interface OnEventListener {
         fun hideToolbar()
-    }
-
-    fun setOnEventListener(listener: OnEventListener?) {
-        this.listener = listener
     }
 
     private var _binding: FragmentSignupBinding? = null
@@ -46,7 +36,7 @@ class SignupFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,7 +50,7 @@ class SignupFragment : Fragment() {
             ViewModelProvider(this)[SharedViewModel::class.java]
         }
 
-        listener?.hideToolbar();
+        listener?.hideToolbar()
         // Initialize Firebase Auth
         auth = Firebase.auth
 
@@ -89,7 +79,7 @@ class SignupFragment : Fragment() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(ContentValues.TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
+
                     Toast.makeText(context, "User successfully registered.",
                         Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_signupFragment_to_FirstFragment)
