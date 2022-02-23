@@ -34,6 +34,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207909676176:android:674766ac04b55c1bd06415",
+        "android_client_info": {
+          "package_name": "com.example.budgetingigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207909676176-pt1podr8335pkbk844nenif0508ederf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5W3FfaCqUo7yTjl8lOgyrgQnNdN1Qpi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207909676176-pt1podr8335pkbk844nenif0508ederf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -59,7 +59,7 @@ dependencies {
 
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
 
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx'
@@ -68,6 +68,9 @@ dependencies {
 
     implementation "com.google.firebase:firebase-firestore-ktx"
 
+    // Declare the dependency for the Analytics library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     //Moshi & retrofit
     implementation "com.squareup.moshi:moshi-kotlin:1.11.0"

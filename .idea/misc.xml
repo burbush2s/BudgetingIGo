@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/budgeting_model_item.xml" value="0.10739614994934144" />
-        <entry key="app/src/main/res/layout/concepts_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/concepts_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2569444444444444" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.10739614994934144" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.11" />

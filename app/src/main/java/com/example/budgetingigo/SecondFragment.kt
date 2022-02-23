@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.budgetingigo.data.BudgetingModel
 import com.example.budgetingigo.databinding.FragmentSecondBinding
+import com.google.firebase.analytics.FirebaseAnalytics
 
 private const val LOG_TAG = "SecondFragment"
 /**

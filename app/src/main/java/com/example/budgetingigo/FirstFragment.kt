@@ -102,7 +102,7 @@ class FirstFragment : Fragment() {
                             (requireActivity() as MainActivity).showHideToolbar(true)
                         }
                         .addOnFailureListener {e ->
-                            Log.w(TAG, "signInWithEmail:failure", e)
+                            Log.w(TAG, "getBalances:failure", e)
                             Toast.makeText(context, "Failed to get previous data.",
                                 Toast.LENGTH_SHORT).show()
                         }
